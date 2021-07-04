@@ -103,7 +103,11 @@ def schedule_checkin(msg):
         raise FailedCheckin("Unable to find reservation. Please double check check-in string.")
 
 def process_message(msg, number):
-    if msg.lower().strip() == "ls":
+    if msg.lower().strip().startswith("logs"):
+        authenticate_user(number, admin=True)
+        con = client.containers.get(msg.lower().split()[1])
+        return con.logs().decode("utf-8")
+    elif msg.lower().strip() == "ls":
         authenticate_user(number, admin=True)
         return '\n'.join(['%s %s' % (con.id[:12], ' '.join(con.attrs['Config']['Cmd'])) for con in client.containers.list()])
     else:
@@ -111,4 +115,4 @@ def process_message(msg, number):
         return 'Check-in successful! Check-in ID: %s' % schedule_checkin(msg)
 
 if __name__ == "__main__":
-    process_message(sys.argv[1], 'nothing')
+    print(process_message(sys.argv[1], 'nothing'))
