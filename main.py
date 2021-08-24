@@ -109,7 +109,7 @@ def process_message(msg, number):
         return con.logs().decode("utf-8")
     elif msg.lower().strip() == "ls":
         authenticate_user(number, admin=True)
-        return '\n'.join(['%s %s' % (con.id[:12], ' '.join(con.attrs['Config']['Cmd'])) if con.attrs['Config']['Cmd'] else [] for con in client.containers.list()])
+        return '\n'.join(['%s %s' % (con.id[:12], ' '.join(con.attrs['Config']['Cmd'] if con.attrs['Config']['Cmd'] else [])) for con in client.containers.list()])
     else:
         authenticate_user(number)
         return 'Check-in successful! Check-in ID: %s' % schedule_checkin(msg)
