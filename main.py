@@ -53,7 +53,7 @@ def validate_checkin_string(msg):
     return bool(pattern.search(msg))
 
 def validate_duplicate_checkin(msg):
-    if msg.lower().strip() in [' '.join(con.attrs['Config']['Cmd']).lower().strip() for con in client.containers.list()]:
+    if msg.lower().strip() in [' '.join(con.attrs['Config']['Cmd']).lower().strip() for con in client.containers.list() if con.attrs['Config']['Cmd']]:
         return False
     else:
         return True
