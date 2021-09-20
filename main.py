@@ -96,7 +96,7 @@ def schedule_checkin(msg):
         raise DuplicateCheckin("This reservation has already had a check-in scheduled.")
     
     con = client.containers.run("pyro2927/southwestcheckin:latest", detach=True, command=msg)
-    time.sleep(3)
+    time.sleep(5)
     if validate_successful_schedule(con):
         return con.id[:12]
     else:
